@@ -1,0 +1,14 @@
+{
+"type": "yandex",
+"service_account_key_file": "key.json",
+"folder_id": "6ifh9n8v",
+"source_image_family": "ubuntu-1604-lts",
+"image_name": "reddit-base-{{timestamp}}",
+"image_family": "reddit-base",
+"ssh_username": "ubuntu",
+"platform_id": "standard-v1",
+"disk_type": "network-hdd",
+"disk_size_gb": 10,
+"use_ipv4_nat": true,
+"use_internal_ip": false
+}

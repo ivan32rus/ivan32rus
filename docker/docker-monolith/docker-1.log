@@ -1,0 +1,15 @@
+REPOSITORY                          TAG         IMAGE ID       CREATED         SIZE
+postgres                            13-alpine   0ad8200ddbe2   9 months ago    160MB
+python                              3.8         ed68546ba062   9 months ago    883MB
+bitnami/apache                      latest      7c5b188b3393   11 months ago   495MB
+ubuntu                              latest      f63181f19b2f   13 months ago   72.9MB
+hello-world                         latest      bf756fb1ae65   2 years ago     13.3kB
+
+#Images содержит время создания, указан контейнер который использует,
+#другая информация, относящаяся к работе образа 
+#и т.д.
+
+#Container содержится раздел NetworkSettings, где подробно описаны сетевые параметры, 
+#и т.д.
+#...
+

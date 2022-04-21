@@ -1,0 +1,17 @@
+files
+packer/variables.json
+*.tfstate
+*.tfstate.*.backup
+*.tfstate.backup
+*.tfvars
+.terraform/
+/scripts
+ubuntu16.json
+*.retry
+.jdauphant.nginx
+jdauphant.nginx
+vault.key
+
+#for_docker-4
+.env
+
