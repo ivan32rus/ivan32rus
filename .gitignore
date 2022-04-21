@@ -1,4 +1,6 @@
 files
+__pycache__
+.coverage
 packer/variables.json
 *.tfstate
 *.tfstate.*.backup
