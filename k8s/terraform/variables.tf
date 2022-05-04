@@ -20,27 +20,12 @@ variable private_key_path {
 variable image_id {
   description = "Disk image"
 }
-#variable subnet_id{
-#  description = "Subnet"
-#}
+variable subnet_id{
+  description = "Subnet"
+}
 variable service_account_key_file{
   description = "key .json"
 }
 variable region_id{
   description = "The default is ru-central1"
 }
-variable app_disk_image {
-  description = "Disk image for reddit app"
-  default = "reddit-app-base"
-}
-variable db_disk_image {
-  description = "Disk image for reddit db"
-  default = "reddit-db-base"
-}
-variable sub {
-  description = "Subnet"
-  default     = "192.168.10.0/24"
-}
-#variable envare {
-#  description = "Environment for prefix"
-#}

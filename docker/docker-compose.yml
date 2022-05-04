@@ -1,12 +1,61 @@
-version: '3.3'
-
+version: '3'
 services:
-  post_db:
-    image: mongo:${SERVICE_MONGO}
-#    volumes:
-#      - post_db:/data/db
+  crawler_db:
+    image: mongo:3.2
+    volumes:
+      - crawler_db:/data/db
     networks:
-      #- reddit
+      back_net:
+        aliases:
+          - crawler_db
+          - mongo_db
+    environment: 
+      - ZIPKIN_ENABLED=true
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    depends_on:
+      - crawler_db
+    volumes:
+      - rabbit:/var
+    networks:
+      - back_net
+    environment: 
+      - ZIPKIN_ENABLED=true
+
+  ui:
+    image: podstolniy/ui:0.0.1
+    depends_on:
+      - crawler_db
+    ports:
+      - 8000:8000/tcp
+    networks:
+      - back_net
+    environment: 
+      - ZIPKIN_ENABLED=true
+
+  crawler:
+    image: podstolniy/crawler:0.0.1
+    restart: always
+    depends_on:
+      - crawler_db
+      - rabbitmq
+    networks:
+      - back_net
+    environment: 
+      - ZIPKIN_ENABLED=true
+
+  prometheus:
+    image: podstolniy/prometheus-prog:0.0.1
+    ports:
+      - '9090:9090'
+    volumes:
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention=1d'
+    networks:
       - back_net
 
   node-exporter:
@@ -20,84 +69,20 @@ services:
       - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
-
-  ui:
-    build: ../src/ui
-    image: ${USER_NAME}/ui:${SERVICE_UI}
-    ports:
-      - ${PORT_UI}:${PORT_UI}/${PROTOCOL}
-    environment:
-      - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
     networks:
-      #- reddit
-      - front_net
-    
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-address: localhost:24224
-        tag: service.ui
-
-  post:
-    build: ../src/post-py
-    image: ${USER_NAME}/post:${SERVICE_POST}
-    networks:
-      #- reddit
-      - front_net
-      - back_net 
-
-    environment:
-      - POST_DATABASE_HOST=post_db
-      - POST_DATABASE=posts
-      - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
-    depends_on:
-      - post_db  
-    ports:
-      - "5000:5000"
- 
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-address: localhost:24224
-        tag: service.post
-
-#----
-
-  comment:  
-    build: ../src/comment
-    image: ${USER_NAME}/comment:${SERVICE_COMMENT}
-    networks:
-      #- reddit
-      - front_net
       - back_net
 
-  prometheus:
-    image: ${USER_NAME}/prometheus
-    volumes:
-      #- ./prometheus/:/etc/prometheus/
-      - prometheus_data:/prometheus
+  mongodb-exporter:
+    image: percona/mongodb_exporter:0.30.0
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--storage.tsdb.retention=1d' # Задаем время хранения метрик в 1 день
-    environment:
-      - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
-    ports:
-      - 9090:9090
+      - '--mongodb.uri=mongodb://mongo_db:27017'
     networks:
-      #- reddit
-      - front_net
       - back_net
 
 volumes:
-  post_db:
-
-volumes:
+  crawler_db:
+  rabbit:
   prometheus_data:
 
 networks:
-  #reddit:
-  front_net:
-    driver: bridge
   back_net:
-    driver: bridge
