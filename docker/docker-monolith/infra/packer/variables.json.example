@@ -1,5 +1,0 @@
-{
-"service_account_key_file": "packer/key.json",
-"folder_id": "folder_id",
-"source_image_family": "source_image_family"
-}

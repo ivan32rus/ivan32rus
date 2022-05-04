@@ -1,0 +1,19 @@
+{
+
+"builders": [
+          {
+            "type": "yandex",
+            "service_account_key_file": "~/key.json",
+            "folder_id": "folder_id"",
+            "source_image_family": "ubuntu-2004-lts",
+            "image_name": "packer-k8s-test",
+            "ssh_username": "ubuntu",
+            "disk_type": "network-hdd",
+            "disk_size_gb": 64,
+            "instance_mem_gb": 8,
+            "use_ipv4_nat": true,
+            "use_internal_ip": false
+
+           }
+            ]
+}
