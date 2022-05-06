@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fluentd
+  labels:
+    app: search_engine
+    component: fluentd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: search_engine
+      component: fluentd
+  template:
+    metadata:
+      name: fluentd
+      labels:
+        app: search_engine
+        component: fluentd
+    spec:
+      containers:
+      - image: podstolniy/fluentd:0.0.1
+        name: fluentd
+        env:
+        - name: ENV
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+
