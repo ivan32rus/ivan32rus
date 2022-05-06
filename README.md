@@ -2,8 +2,6 @@
 
 ## --- ОПИСАНИЕ МЕНЯЕТСЯ РЕГУЛЯРНО!
 
-
-
 # I. Подготовка к развертыванию архитектуры:
 #Период выполнения: 27.04-05.05.22
 #Доп. работы до 18.05.22
@@ -60,14 +58,17 @@ make build
 
 #Результат - собранный проект: ui, crawler, logging, monitoring
 
+#В нашем случае собранные образы находятся тут:
+#https://hub.docker.com/repository/docker/podstolniy
+
 #Доп. бонус:
 
-# 1. Можем "запушить" проект в DockerHub 
+#2.1. Можем "запушить" проект в DockerHub 
 #Запускаем:
 
 make push
 
-# 2. Ключи закомичены, но готовы к бою:
+#2.2 Ключи закомичены, но готовы к бою:
 
 #make deploy
 #make cleaning
@@ -79,22 +80,32 @@ make push
 # II. Развертывание инфраструктуры k8s
 #---- Период выполнения: 10.05.22-10.05.22
 
-# 1. Собираем образ диска, который будет использоваться
-# для развертывания K8s
+# 1. Собираем образ диска, который будет использоваться для развертывания K8s
 
 #!Условие: Установленный packer
-#Характеристики диска:
+#Инструкция по устновке packer:
+#https://cloud.yandex.ru/docs/tutorials/infrastructure-management/packer-quickstart
+
+#Наши характеристики диска:
 #Ubuntu 2004 Serv x64 , 8RUM, 4CPU, 64Gb HDD
 
 #Перейдем в каталог 
 
 cd ~./k8s/packer
 
-#Запустим сборку образа
+#Запускаем сборку образа с указанными в конфигурации параметрами:
 
 packer build k8s-desk.json .
 
 #Результат: Создан образ диска
+#нам необходим его id (смотрим в консоли при создании или в кансоли YC)
+#id диска укажим в разделе ~./k8s/terraform/main.tf:
+
+    boot_disk {
+      initialize_params {
+        image_id = "<YOUR image a packer>" # Ubuntu 20.04 LTS
+      }
+    }
 
 # 2. Развертывание архитектуры k8s c помощью Terraform
 #!Условие: Установленный Terraform
@@ -126,11 +137,44 @@ terraform apply
 
 # III. Диплой приложения
 
+
 ##---- Период выполнения: 06.05.22-10.05.22
+
+###!!!Добавить ОПИСАНИЕ ПРОЦЕССОВ!!!ПОДРОБНО!
+
+#перейдем в каталог:
+
+cd ~.k8s/deployments
+
+#содержимое каталога:
+
+#namespaces.yml
+#crawler-deployment.yml
+#crawler-service.yml
+#mongodb-deployment.yml
+#mongodb-service.yml
+#rabbitmq-deployment.yml
+#rabbitmq-service.yml
+#ui-deployment.yml
+#ui-ingress.yml
+#ui-service.yml
+
+#3.1 Создаем три namespaces: monitoring, dev, prod
+
+#Создадим namespaces:
+
+kubectl apply -f namespaces.yml
+
+#3.2 Запуск диплоя на примере ui:
+
+kubectl apply -f ui-deployment.yml
+
+#3.3 Устновка с использованием charts манифестов
+#в работе
 
 # IV Готовим CI/CD
 
-## ---- Период выполнения: 11.05.22-13.05.22
+## ---- Период выполнения: 6.05.22-10.05.22
 
 # V Устранения неисправностей, приготовление к сдаче проекта
 

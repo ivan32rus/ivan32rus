@@ -43,7 +43,7 @@ resource "yandex_vpc_subnet" "k8s-network" {
 
 resource "yandex_kubernetes_cluster" "k8s-test" {
   network_id = yandex_vpc_network.default1.id
-  version = "1.19"
+  version = "1.20"
   master {
     zonal {
       subnet_id = yandex_vpc_subnet.k8s-network.id
@@ -59,11 +59,13 @@ resource "yandex_kubernetes_cluster" "k8s-test" {
       yandex_resourcemanager_folder_iam_binding.images-puller
      ]
 }
-#--NOW not image packer
+
+# Image whis a packer builders
+
 resource "yandex_kubernetes_node_group" "node_groups" {
   cluster_id  = yandex_kubernetes_cluster.k8s-test.id
   name        = "k8s-test-group"
-  version     = "1.19"
+  version     = "1.20"
 
   instance_template {
     platform_id = "standard-v2"
@@ -72,12 +74,14 @@ resource "yandex_kubernetes_node_group" "node_groups" {
       ssh-keys = "ubuntu:${var.public_key}"
     }
 
-    resources {
-      cores  = 4
-      memory = 8
-    }
+     resources {
+       cores  = 4
+     }
+    
     boot_disk {
-      size = 64
+      initialize_params {
+        image_id = "<YOUR image a packer>" # Ubuntu 20.04 LTS
+      }
     }
 
   }
@@ -87,3 +91,5 @@ resource "yandex_kubernetes_node_group" "node_groups" {
     }
   }
 }
+
+
