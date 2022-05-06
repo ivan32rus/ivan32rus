@@ -202,9 +202,20 @@ kubectl apply -f namespaces.yml
 
 #3.2 Запуск диплоя на примере ui:
 
-kubectl apply -f ui-deployment.yml
+#запуск в namespace dev/
 
-#3.3 Устновка с использованием charts манифестов [ ! в работе ]
+kubectl apply -f ui-deployment.yml -n dev
+
+#3.3 Запуск диплоя проложений для мониторинга и логирования [ ! в работе ]:
+
+cd ~./log_monitor
+
+#запуск в namespace monitoring/
+
+kubectl apply -f fluent-deployment.yml -n monitoring
+kubectl apply -f prometheus-deployment.yml -n monitoring
+
+#3.4 Устновка с использованием charts манифестов [ ! в работе ]
 
 # IV Готовим CI/CD
 
