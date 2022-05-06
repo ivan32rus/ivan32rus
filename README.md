@@ -1,17 +1,19 @@
 # PROJECT OTUS-DEV-O1
+# Сборка и деплой проекта дипломного проект
+# Код предоставлен express42
+#https://github.com/express42/search_engine_ui
+#https://github.com/express42/search_engine_crawler
 
 ## --- ОПИСАНИЕ МЕНЯЕТСЯ РЕГУЛЯРНО!
 
-# I. Подготовка к развертыванию архитектуры:
-#Период выполнения: 27.04-05.05.22
-#Доп. работы до 18.05.22
+# I. Подготовка к развертыванию архитектуры: 
+#Период выполнения: 27.04-05.05.22. Доп. работы до 18.05.22
 
 # 1. Сборка Docker для:
 #Переходим в соответствующие каталоги:
 cd ~./logging 
 cd ~./monitoring
-#запускаем все контейнеры, видим stdout всех контейнеров
-#для остановки используем Ctrl+C
+#запускаем все контейнеры, видим stdout всех контейнеров для остановки используем Ctrl+C
 
 docker-compose up
 
@@ -47,8 +49,7 @@ cd ~./prog/crawler
 #!Сборка проектов представлена в соответвующих каталогах
 
 # 2. Билдинг проекта
-#Сборка проекта осуществляется с помощь Makefile файла.
-#Переходим в каталог builder:
+#Сборка проекта осуществляется с помощь Makefile файла. Переходим в каталог builder:
 
 cd ~./builder
 
@@ -59,11 +60,13 @@ make build
 #Результат - собранный проект: ui, crawler, logging, monitoring
 
 #В нашем случае собранные образы находятся тут:
+
 #https://hub.docker.com/repository/docker/podstolniy
 
 #Доп. бонус:
 
 #2.1. Можем "запушить" проект в DockerHub 
+
 #Запускаем:
 
 make push
@@ -71,22 +74,31 @@ make push
 #2.2 Ключи закомичены, но готовы к бою:
 
 #make deploy
+
 #make cleaning
+
 #make rmi
+
 #make stop_container
+
 #make rm_container
+
 #make rmi_docker_hub
 
 # II. Развертывание инфраструктуры k8s
-#---- Период выполнения: 10.05.22-10.05.22
+
+#---- Период выполнения: 6.05.22-10.05.22
 
 # 1. Собираем образ диска, который будет использоваться для развертывания K8s
 
 #!Условие: Установленный packer
+
 #Инструкция по устновке packer:
+
 #https://cloud.yandex.ru/docs/tutorials/infrastructure-management/packer-quickstart
 
 #Наши характеристики диска:
+
 #Ubuntu 2004 Serv x64 , 8RUM, 4CPU, 64Gb HDD
 
 #Перейдем в каталог 
@@ -98,7 +110,9 @@ cd ~./k8s/packer
 packer build k8s-desk.json .
 
 #Результат: Создан образ диска
+
 #нам необходим его id (смотрим в консоли при создании или в кансоли YC)
+
 #id диска укажим в разделе ~./k8s/terraform/main.tf:
 
     boot_disk {
@@ -108,15 +122,21 @@ packer build k8s-desk.json .
     }
 
 # 2. Развертывание архитектуры k8s c помощью Terraform
+
 #!Условие: Установленный Terraform
+
 #Инструкция по установке и настройке Terraform в Яндекс:
+
 #https://cloud.yandex.ru/docs/tutorials/infrastructure-management/terraform-quickstart#install-terraform
 
 #!В данном проекте для работы с кластером создается пользователь 
+
 #k8s-test с ролью "editor"
+
 #ssh ключ и путь произвольные и указываются "СВОИ"
 
 # Устновим k8s в Яндекс
+
 #Перейти в каталог:
 
 cd ~./k8s/terraform
@@ -128,7 +148,9 @@ terraform init
 #Проверим конфигурацию:
 
 terraform validate
+
 #и
+
 terraform plan
 
 #Запустим установку кластера
@@ -149,14 +171,23 @@ cd ~.k8s/deployments
 #содержимое каталога:
 
 #namespaces.yml
+
 #crawler-deployment.yml
+
 #crawler-service.yml
+
 #mongodb-deployment.yml
+
 #mongodb-service.yml
+
 #rabbitmq-deployment.yml
+
 #rabbitmq-service.yml
+
 #ui-deployment.yml
+
 #ui-ingress.yml
+
 #ui-service.yml
 
 #3.1 Создаем три namespaces: monitoring, dev, prod
@@ -169,8 +200,7 @@ kubectl apply -f namespaces.yml
 
 kubectl apply -f ui-deployment.yml
 
-#3.3 Устновка с использованием charts манифестов
-#в работе
+#3.3 Устновка с использованием charts манифестов [ ! в работе ]
 
 # IV Готовим CI/CD
 
