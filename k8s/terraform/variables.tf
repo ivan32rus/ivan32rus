@@ -29,3 +29,6 @@ variable service_account_key_file{
 variable region_id{
   description = "The default is ru-central1"
 }
+variable iamge_name {
+  default = "image name"
+}
