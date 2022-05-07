@@ -1,4 +1,12 @@
 # for k8s
+terraform {
+  required_providers {
+    yandex = {
+      source = "yandex-cloud/yandex"
+    }
+  }
+}
+
 
 provider "yandex" {
   service_account_key_file = var.service_account_key_file
@@ -43,12 +51,11 @@ resource "yandex_vpc_subnet" "k8s-network" {
 
 resource "yandex_kubernetes_cluster" "k8s-test" {
   network_id = yandex_vpc_network.default1.id
-  version = "1.20"
   master {
     zonal {
       subnet_id = yandex_vpc_subnet.k8s-network.id
       zone = yandex_vpc_subnet.k8s-network.zone
-     } 
+     }
   }
   #service_account_id = test.id
   #node_service_account_id = test.id
@@ -69,19 +76,21 @@ resource "yandex_kubernetes_node_group" "node_groups" {
 
   instance_template {
     platform_id = "standard-v2"
-    nat         = true
     metadata = {
-      ssh-keys = "ubuntu:${var.public_key}"
+      ssh-keys = "ubuntu:${file(var.public_key_path)}"
     }
+
+    network_interface {
+         nat                = true
+         subnet_ids         = ["${yandex_vpc_subnet.k8s-network.id}"] # Используется подсеть k8s-network описанная выше
+       }
 
      resources {
        cores  = 4
      }
-    
-    boot_disk {
-      initialize_params {
-        image_id = "<YOUR image a packer>" # Ubuntu 20.04 LTS
-      }
+
+    boot_disk {     # Initialize params не используется данным модулем терраформа
+                
     }
 
   }
@@ -91,5 +100,3 @@ resource "yandex_kubernetes_node_group" "node_groups" {
     }
   }
 }
-
-
