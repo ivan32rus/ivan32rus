@@ -7,6 +7,12 @@
 
 ## --- ОПИСАНИЕ МЕНЯЕТСЯ РЕГУЛЯРНО!
 
+#!Пункт раздела II-1 (Packer) более не используется
+
+#образ диска создается автоматически в Terraform
+
+#соответствующая конфигурация внесена в main.tf 
+
 # I. Подготовка к развертыванию архитектуры: 
 #Период выполнения: 27.04-05.05.22. Доп. работы до 18.05.22
 
@@ -145,6 +151,26 @@ packer build k8s-desk.json .
 
 cd ~./k8s/terraform
 
+#!Внимание:
+
+#В нашей работе используетются default парметры для folder_id" зоны и роли кластера
+
+#для того, чтобы использовать своего пользователя со своей ролью и folder_id
+
+#следуйте руководству:
+
+#https://cloud.yandex.ru/docs/managed-kubernetes/operations/kubernetes-cluster/kubernetes-cluster-create
+
+#тогда можно раскомментировать блоки и создать пользователя для работы с кластером,
+ 
+resource "yandex_resourcemanager_folder_iam_binding" "editor"
+
+resource "yandex_resourcemanager_folder_iam_binding" "images-puller"
+
+depends_on
+
+#Далее
+
 #Проинициализируем Terraform:
 
 terraform init
@@ -166,7 +192,28 @@ terraform apply
 
 ##---- Период выполнения: 06.05.22-10.05.22
 
-###!!!Добавить ОПИСАНИЕ ПРОЦЕССОВ!!!ПОДРОБНО!
+#После успешной устновки Кластера
+
+#выполянем действия:
+
+#Установим и инициализируем интерфейс командной строки Yandex.Cloud.
+
+##Ссылки на документацию Yandex.Cloud
+
+##https://cloud.yandex.ru/docs/cli/quickstart#install
+
+##https://cloud.yandex.ru/docs/managed-kubernetes/operations/kubernetes-cluster/kubernetes-cluster-get-credetials
+
+#Добавим учетные данные кластера Kubernetes в конфигурационный файл kubectl:
+
+yc managed-kubernetes cluster get-credentials --id <id вашего кластера> --internal
+
+#Используйте утилиту kubectl для работы с кластером Kubernetes:
+
+#Например:
+
+kubectl get pods
+
 
 #перейдем в каталог:
 
