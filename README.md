@@ -191,11 +191,7 @@ terraform apply
 
 ##---- Период выполнения: 06.05.22-10.05.22
 
-#После успешной устновки Кластера
-
-#выполянем действия:
-
-#Установим и инициализируем интерфейс командной строки Yandex.Cloud.
+#После успешной устновки Кластера установим и инициализируем интерфейс командной строки Yandex.Cloud.
 
 ##Ссылки на документацию Yandex.Cloud
 
@@ -212,6 +208,18 @@ yc managed-kubernetes cluster get-credentials --id <id вашего класте
 #Например посмотрим ноды установленного кластера:
 
 kubectl get node
+
+# Для удобства диплоя приложений в Кластер, установим Helm:
+
+curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
+
+sudo apt-get install apt-transport-https --yes
+
+echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+
+sudo apt-get update
+
+sudo apt-get install helm
 
 # 3.1 Переходим к диплою приложения
 
@@ -281,25 +289,17 @@ kubectl get pods -n dev
 
 #Результат:
 
-NAME                       READY   STATUS    RESTARTS   AGE
+NAME                     READY   STATUS RESTARTS  AGE
+crawler-77d5bb6c56-7ptmj  1/1   Running   0       14m
+crawler-77d5bb6c56-dwckw  1/1   Running   0       14m
+crawler-77d5bb6c56-sgwq9  1/1   Running   0       15m
+mongodb-7f777c8985-594r9  1/1   Running   0       47m
+rabbitmq-f486f4785-w9vcn  1/1   Running   0       48m
+ui-55f5d5484f-9dhxl       1/1   Running   0       14m
+ui-55f5d5484f-j9wnm       1/1   Running   0       15m
+ui-55f5d5484f-scrcm       1/1   Running   0       15m
 
-crawler-77d5bb6c56-7ptmj   1/1     Running   0          14m
-
-crawler-77d5bb6c56-dwckw   1/1     Running   0          14m
-
-crawler-77d5bb6c56-sgwq9   1/1     Running   0          15m
-
-mongodb-7f777c8985-594r9   1/1     Running   0          47m
-
-rabbitmq-f486f4785-w9vcn   1/1     Running   0          48m
-
-ui-55f5d5484f-9dhxl        1/1     Running   0          14m
-
-ui-55f5d5484f-j9wnm        1/1     Running   0          15m
-
-ui-55f5d5484f-scrcm        1/1     Running   0          15m
-
-#3.2 Запуск диплоя проложений для мониторинга и логирования [ ! в работе ]:
+#3.2 Запуск диплоя проложений для мониторинга и логирования:
 
 cd ~./log_monitor
 
@@ -308,6 +308,17 @@ cd ~./log_monitor
 kubectl apply -f fluent-deployment.yml -n monitoring
 
 kubectl apply -f prometheus-deployment.yml -n monitoring
+
+#Проверим работу сервиса:
+
+kubectl get service -n monitoring
+
+#Результат:
+NAME              TYPE       CLUSTER-IP   EXTERNAL-IP   PORT(S)          AGE
+prometheus-prog   NodePort   10.96.214.33   <none>        9090:31287/TCP   127m
+
+#Prometheus доступен по адресу http://<YUR_IP>:<NODE_PORT>
+
 
 #3.3 Устновка с использованием charts манифестов [ ! в работе ]
 
