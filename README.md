@@ -145,7 +145,7 @@ packer build k8s-desk.json .
 
 #ssh ключ и путь произвольные и указываются "СВОИ"
 
-# Устновим k8s в Яндекс
+# Установим k8s в Яндекс
 
 #Перейти в каталог:
 
@@ -189,7 +189,6 @@ terraform apply
 
 # III. Диплой приложения
 
-
 ##---- Период выполнения: 06.05.22-10.05.22
 
 #После успешной устновки Кластера
@@ -210,10 +209,11 @@ yc managed-kubernetes cluster get-credentials --id <id вашего класте
 
 #Используйте утилиту kubectl для работы с кластером Kubernetes:
 
-#Например:
+#Например посмотрим ноды установленного кластера:
 
-kubectl get pods
+kubectl get node
 
+# 3.1 Переходим к диплою приложения
 
 #перейдем в каталог:
 
@@ -241,28 +241,75 @@ cd ~.k8s/deployments
 
 #ui-service.yml
 
-#3.1 Создаем три namespaces: monitoring, dev, prod
+#Создаем три namespaces: monitoring, dev, prod
 
-#Создадим namespaces:
+#Выполним команду:
 
 kubectl apply -f namespaces.yml
 
-#3.2 Запуск диплоя на примере ui:
+#Устанавливаем UI, CRAWLER, DB:
 
 #запуск в namespace dev/
 
+# IU
+
 kubectl apply -f ui-deployment.yml -n dev
 
-#3.3 Запуск диплоя проложений для мониторинга и логирования [ ! в работе ]:
+kubectl apply -f ui-service.yml -n dev
+
+kubectl apply -f ui-ingress.yml -n dev
+
+# CRAWLER
+
+kubectl apply -f crawler-deployment.yml -n dev
+
+kubectl apply -f crawler-service.yml -n dev
+
+# DB
+
+kubectl apply -f mongodb-deployment.yml -n dev
+
+kubectl apply -f mongodb-service.yml -n dev
+
+kubectl apply -f rabbitmq-deployment.yml -n dev
+
+kubectl apply -f rabbitmq-service.yml -n dev
+
+#Результат успешного диплоя можно посмотреть командой:
+
+kubectl get pods -n dev 
+
+#Результат:
+
+NAME                       READY   STATUS    RESTARTS   AGE
+
+crawler-77d5bb6c56-7ptmj   1/1     Running   0          14m
+
+crawler-77d5bb6c56-dwckw   1/1     Running   0          14m
+
+crawler-77d5bb6c56-sgwq9   1/1     Running   0          15m
+
+mongodb-7f777c8985-594r9   1/1     Running   0          47m
+
+rabbitmq-f486f4785-w9vcn   1/1     Running   0          48m
+
+ui-55f5d5484f-9dhxl        1/1     Running   0          14m
+
+ui-55f5d5484f-j9wnm        1/1     Running   0          15m
+
+ui-55f5d5484f-scrcm        1/1     Running   0          15m
+
+#3.2 Запуск диплоя проложений для мониторинга и логирования [ ! в работе ]:
 
 cd ~./log_monitor
 
 #запуск в namespace monitoring/
 
 kubectl apply -f fluent-deployment.yml -n monitoring
+
 kubectl apply -f prometheus-deployment.yml -n monitoring
 
-#3.4 Устновка с использованием charts манифестов [ ! в работе ]
+#3.3 Устновка с использованием charts манифестов [ ! в работе ]
 
 # IV Готовим CI/CD
 
