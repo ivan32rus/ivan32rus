@@ -20,7 +20,7 @@ spec:
         component: ui
     spec:
       containers:
-      - image: podstolniy/ui:latest
+      - image: podstolniy/ui:0.0.1
         name: ui
         env:
         - name: MONGO

@@ -20,7 +20,7 @@ spec:
         component: crawler
     spec:
       containers:
-      - image: podstolniy/crawler:latest
+      - image: podstolniy/crawler:0.0.1
         name: crawler
         env:
         - name: MONGO
