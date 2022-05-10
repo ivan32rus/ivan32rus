@@ -4,13 +4,15 @@ kind: Service
 metadata:
   name: prometheus-prog
   labels:
-    app: search_engine
+    app: prometheus
     component: prometheus-prog
 spec:
+  type: NodePort
   ports:
   - port: 9090
     protocol: TCP
     targetPort: 9090
   selector:
-    app: search_engine
+    app: prometheus
     component: prometheus-prog
+
