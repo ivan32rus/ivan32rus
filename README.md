@@ -1,5 +1,5 @@
 # PROJECT OTUS-DEV-O1
-# Сборка и деплой дипломного проект
+
 # Код предоставлен express42
 #https://github.com/express42/search_engine_ui
 
@@ -44,6 +44,7 @@ docker-compose -f docker-compose-logging.yml down-
 #Точно также соберем и ui/crawler Образы:
 
 cd ~./prog/ui
+
 cd ~./prog/crawler
 
 #!Сборка проектов представлена в соответвующих каталогах
@@ -107,7 +108,9 @@ cd ~./k8s/terraform
 #Выполняем команды инициализации и проверки конфигурации:
 
 terraform init
+
 terraform validate
+
 terraform plan
 
 #Запускаем установку кластера
@@ -123,9 +126,13 @@ yc managed-kubernetes cluster get-credentials --id <id вашего класте
 # Для удобства диплоя приложений в Кластер, установим Helm:
 
 curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
+
 sudo apt-get install apt-transport-https --yes
+
 echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+
 sudo apt-get update
+
 sudo apt-get install helm
 
 # 3.1 Переходим к диплою приложения:
@@ -143,21 +150,26 @@ kubectl apply -f namespaces.yml
 # IU
 
 kubectl apply -f ui-deployment.yml -n dev
+
 kubectl apply -f ui-service.yml -n dev
+
 kubectl apply -f ui-ingress.yml -n dev
 
 # CRAWLER
 
 kubectl apply -f crawler-deployment.yml -n dev
+
 kubectl apply -f crawler-service.yml -n dev
 
 # DB
 
 kubectl apply -f mongodb-deployment.yml -n dev
-kubectl apply -f mongodb-service.yml -n dev
-kubectl apply -f rabbitmq-deployment.yml -n dev
-kubectl apply -f rabbitmq-service.yml -n dev
 
+kubectl apply -f mongodb-service.yml -n dev
+
+kubectl apply -f rabbitmq-deployment.yml -n dev
+
+kubectl apply -f rabbitmq-service.yml -n dev
 
 #3.2 Запуск диплоя проложений для мониторинга и логирования:
 
@@ -166,9 +178,13 @@ cd ~./log_monitor
 #запуск в namespace monitoring/
 
 kubectl apply -f fluent-deployment.yml -n monitoring
+
 kubectl apply -f prometheus-deployment.yml -n monitoring
 
 #Для того,чтобы узнать адрес порта, на котором работает сервиc, выполните команду:
 
 kubectl get service -n <YOUR namespace>
 
+# Далее вы можите начать работать с сервисом.
+
+#руководство по эксплуатации сервиса в prog/search_engine_crawler и prog/search_engine_ui
