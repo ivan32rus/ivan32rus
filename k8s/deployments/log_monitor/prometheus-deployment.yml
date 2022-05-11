@@ -4,27 +4,26 @@ kind: Deployment
 metadata:
   name: prometheus-prog
   labels:
-    app: search_engine
+    app: prometheus
     component: prometheus-prog
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: search_engine
+      app: prometheus
       component: prometheus-prog
   template:
     metadata:
-      name: fluentd
+      name: prometheus-pod
       labels:
-        app: search_engine
+        app: prometheus
         component: prometheus-prog
     spec:
       containers:
       - image: podstolniy/prometheus-prog:0.0.1
-        name: fluentd
+        name: prometheus-prog
         env:
         - name: ENV
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-
