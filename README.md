@@ -158,11 +158,37 @@ kubectl apply -f fluent-deployment.yml -n monitoring
 
 kubectl apply -f prometheus-deployment.yml -n monitoring
 
-*Далее вы можите начать работать с сервисом.*
-
-**руководство по эксплуатации сервиса в prog/search_engine_crawler и prog/search_engine_ui**
 ____
 :white_check_mark: Cделано 
+
+## 4 Защитим приложение UI с помощью TLS
+
+**Выполним:**
+
+kubectl get ingress -n dev
+
+*Видим <наш IP> и выполняем*
+
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=<наш IP>"
+
+**Загрузим сертификат в Кластер:**
+
+kubectl create secret tls ui-ingress --key tls.key --cert tls.crt -n dev
+
+*Пересоздадим вручную Ingress правила:*
+
+kubectl delete ingress ui -n dev
+
+kubectl apply -f ui-ingress.yml -n dev
+
+*найдем выделленый Ingress'ом IP для сервиса:*
+
+kubectl get service -n ingress-nginx
+
+**Далее Вы можите начать работать с сервисом.**
+
+**руководство по эксплуатации сервиса в prog/search_engine_crawler и prog/search_engine_ui**
+
 
 # IV CI/CD
 
@@ -188,7 +214,7 @@ helm repo add gitlab https://charts.gitlab.io
 
 **Установим Gitlab в namespace cicd**
  
-helm install --name gitlab -f ~./cicd/values.yaml stable/gitlab-ce -n cicd
+helm install --name gitlab -f ~./gitlab-ci/values.yaml stable/gitlab-ce -n cicd
 
 *Gitlab устновлен и готов к работе*
 
