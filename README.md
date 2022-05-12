@@ -72,13 +72,13 @@ ____
 
 # II. Развертывание инфраструктуры k8s
 
-## 1. Развертывание архитектуры k8s c помощью Terraform
+## 1 Развертывание архитектуры k8s c помощью Terraform
 
-**Необходимое условие - установленный Terraform (инструкция по установке и настройке Terraform в Яндекс):
+**Необходимое условие - установленный Terraform (инструкция по установке и настройке Terraform в Яндекс):**
 
 *https://cloud.yandex.ru/docs/tutorials/infrastructure-management/terraform-quickstart#install-terraform*
 
-**Установим k8s в Яндекс*
+**Установим k8s в Яндекс**
 
 *Переходим в каталог:*
 
@@ -99,6 +99,17 @@ terraform apply
 **Добавим учетные данные кластера Kubernetes в конфигурационный файл kubectl**
 
 yc managed-kubernetes cluster get-credentials --id <id вашего кластера> --internal
+
+## 2 Ingress Controller
+
+*Для удобного управления входящим снаружи трафиком будем использовать Ingress*
+
+**Установим Ingress**
+
+kubectl apply -f /
+https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.34.1/deploy/static/provider/cloud/deploy.yaml
+
+*ingress устновлен в namespace ingress-nginx*
 ____
 
 :white_check_mark: Cделано 
@@ -169,13 +180,15 @@ sudo apt-get install helm
 
 ## 1. Установим Gitlab 
 
+:black_square_button: Тестируем...
+
 **Добавим необходимый репозиторий**
 
 helm repo add gitlab https://charts.gitlab.io
 
 **Установим Gitlab в namespace cicd**
-
-helm install --name gitlab -f ~./cicd/values.yaml stable/gitlab-ce -n cicd 
+ 
+helm install --name gitlab -f ~./cicd/values.yaml stable/gitlab-ce -n cicd
 
 *Gitlab устновлен и готов к работе*
 
