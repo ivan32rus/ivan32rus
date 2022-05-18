@@ -124,51 +124,27 @@ kubectl apply -f namespaces.yml
 
 ## 2 Установим наши приложения UI, CRAWLER, DB в namespace dev:
 
-**IU**
-
-kubectl apply -f ui-deployment.yml -n dev
-
-kubectl apply -f ui-service.yml -n dev
-
-kubectl apply -f ui-ingress.yml -n dev
-
-**CRAWLER**
-
-kubectl apply -f crawler-deployment.yml -n dev
-
-kubectl apply -f crawler-service.yml -n dev
+cd ~.k8s/deployments
 
 **DB**
 
-kubectl apply -f mongodb-deployment.yml -n dev
+kubectl apply -f ./DB -n dev
 
-kubectl apply -f mongodb-service.yml -n dev
+**IU**
 
-kubectl apply -f rabbitmq-deployment.yml -n dev
+kubectl apply -f ./UI -n dev
 
-kubectl apply -f rabbitmq-service.yml -n dev
+**CRAWLER**
+
+kubectl apply -f ./CRAWLER -n dev
 
 ## 3 Запуск диплоя проложений для мониторинга и логирования:
 
 *Запуск в namespace monitoring*
 
-cd ~./log_monitor
+cd ~./deployments
 
-kubectl apply -f flu-role.yml -n monitoring
-kubectl apply -f flu-rb.yml -n monitoring
-kubectl apply -f flu-dep.yml -n monitoring
-kubectl apply -f flu-sa.yml -n monitoring
-kubectl apply -f el-dep.yml -n monitoring
-kubectl apply -f el-srv.yml -n monitoring
-kubectl apply -f kin-dep.yml -n monitoring
-kubectl apply -f prometheus-deployment.yml -n monitoring
-kubectl apply -f prometheus-service.yml -n monitoring
-
-*Далее вы можете начать работать с сервисом.*
-
-**руководство по эксплуатации сервиса в prog/search_engine_crawler и prog/search_engine_ui**
-____
-:white_check_mark: Cделано
+kubectl apply -f ./log_monitor -n monitoring
 
 ## 4 Защитим приложение UI с помощью TLS
 
@@ -199,4 +175,5 @@ kubectl get service -n ingress-nginx
 **руководство по эксплуатации сервиса в prog/search_engine_crawler и prog/search_engine_ui**
 ____
 С Уважением!
+
 
