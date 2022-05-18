@@ -2,7 +2,8 @@ variable cloud_id{
   description = "Cloud"
 }
 variable folder_id {
-  description = "Folder"
+  #description = "Folder"
+  default = "folder_id"
 }
 variable zone {
   description = "Zone"
@@ -31,4 +32,10 @@ variable region_id{
 }
 variable iamge_name {
   default = "image name"
+}
+variable cluster_id {
+  default = "cluster_id"
+}
+variable "acc_service_id" {
+  description = "acc_service_id"
 }
