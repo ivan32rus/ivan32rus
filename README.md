@@ -170,34 +170,33 @@ kubectl apply -f prometheus-service.yml -n monitoring
 ____
 :white_check_mark: Cделано
 
-# IV CI/CD
+## 4 Защитим приложение UI с помощью TLS
 
-**Установим Helm**:
+**Выполним:**
 
-curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
+kubectl get ingress -n dev
 
-sudo apt-get install apt-transport-https --yes
+*Видим <наш IP> и выполняем*
 
-echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=<наш IP>"
 
-sudo apt-get update
+**Загрузим сертификат в Кластер:**
 
-sudo apt-get install helm
+kubectl create secret tls ui-ingress --key tls.key --cert tls.crt -n dev
 
-## 1. Установим Gitlab
+*Пересоздадим вручную Ingress правила:*
 
-:black_square_button: Тестируем...
+kubectl delete ingress ui -n dev
 
-**Добавим необходимый репозиторий**
+kubectl apply -f ui-ingress.yml -n dev
 
-helm repo add gitlab https://charts.gitlab.io
+*найдем выделленый Ingress'ом IP для сервиса:*
 
-**Установим Gitlab в namespace cicd**
+kubectl get service -n ingress-nginx
 
-helm install --name gitlab -f ~./cicd/values.yaml stable/gitlab-ce -n cicd
+**Далее Вы можите начать работать с сервисом.**
 
-*Gitlab устновлен и готов к работе*
+**руководство по эксплуатации сервиса в prog/search_engine_crawler и prog/search_engine_ui**
+____
+С Уважением!
 
-## 2. Настройка Gitlab для проекта
-
-:black_square_button: Тестируем...

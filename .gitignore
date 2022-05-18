@@ -20,3 +20,4 @@ yc_ssh-key.pub
 .env
 *key.json
 packer
+tls.*
