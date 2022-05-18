@@ -8,71 +8,9 @@ ____
 
 :white_check_mark: Cделано
 
-# I. Подготовка к развертыванию архитектуры:
+# I. Развертывание инфраструктуры k8s
 
-## 1. Сборка Docker (необходима, если хотите реализовать собственную сборку):
-
-**Переходим в соответствующие каталоги:**
-
-cd ~./logging
-cd ~./monitoring
-
-**Запускаем все контейнеры, видим stdout всех контейнеров для остановки используем Ctrl+C**
-
-docker-compose up
-
-*или*
-
-docker-compose -f docker-compose-logging.yml
-
-**запуск в режиме демона**
-
-docker-compose up -d
-
-*или*
-
-docker-compose -f docker-compose-logging.yml up -d
-
-*для остановки используем*
-
-docker-compose stop
-
-*для остановки с удалением контейнеров*
-
-docker-compose down
-
-*или*
-
-docker-compose -f docker-compose-logging.yml down-
-
-**Точно также соберем и ui/crawler Образы:**
-
-cd ~./prog/ui
-
-cd ~./prog/crawler
-
-**Сборка проектов представлена в соответвующих каталогах**
-
-## 2. Билдинг проекта
-
-**Сборка проекта осуществляется с помощь Makefile файла. Переходим в каталог builder:**
-
-cd ~./builder
-
-*Запускае:*
-
-make build
-
-**Результат - собранный проект: ui, crawler, logging, monitoring**
-
-*В каталоге builder/readme.md опредставлены ключи для управления сборкой образов*
-____
-
-:white_check_mark: Cделано
-
-# II. Развертывание инфраструктуры k8s
-
-## 1 Развертывание архитектуры k8s c помощью Terraform
+## Развертывание архитектуры k8s c помощью Terraform
 
 **Необходимое условие - установленный Terraform (инструкция по установке и настройке Terraform в Яндекс):**
 
@@ -100,74 +38,30 @@ terraform apply
 
 yc managed-kubernetes cluster get-credentials --id <id вашего кластера> --internal
 
-## 2 Ingress Controller
-
-*Для удобного управления входящим снаружи трафиком будем использовать Ingress*
-
-**Установим Ingress**
-
-kubectl apply -f /
-https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.34.1/deploy/static/provider/cloud/deploy.yaml
-
-*ingress устновлен в namespace ingress-nginx*
 ____
 
 :white_check_mark: Cделано
 
-# III. Диплой приложения
+# II. Диплой приложения
 
-## 1 Создаем четыре namespaces: monitoring, dev, prod, cicd:
-
-cd ~.k8s/deployments
-
-kubectl apply -f namespaces.yml
-
-## 2 Установим наши приложения UI, CRAWLER, DB в namespace dev:
-
-cd ~.k8s/deployments
-
-**DB**
-
-kubectl apply -f ./DB -n dev
-
-**IU**
-
-kubectl apply -f ./UI -n dev
-
-**CRAWLER**
-
-kubectl apply -f ./CRAWLER -n dev
-
-## 3 Запуск диплоя проложений для мониторинга и логирования:
-
-*Запуск в namespace monitoring*
+## 1 Ставим проложения скриптом
 
 cd ~./deployments
 
+*Выполним скрипт:*
 
-**FLUENTD**
-kubectl apply -f flu-role.yml -n monitoring
-kubectl apply -f flu-rb.yml -n monitoring
-kubectl apply -f flu-dep.yml -n monitoring
-kubectl apply -f flu-sa.yml -n monitoring
-**ELASTICSEARCH**
-kubectl apply -f el-dep.yml -n monitoring
-kubectl apply -f el-srv.yml -n monitoring
-**KIBANA**
-kubectl apply -f kin-dep.yml -n monitoring
-**PROMETHEUS**
-kubectl apply -f prometheus-deployment.yml -n monitoring
-kubectl apply -f prometheus-service.yml -n monitoring
+bash service-install.sh apply
 
-*Далее вы можете начать работать с сервисом.*
+**В результате будут установлены приложения:**
 
-**руководство по эксплуатации сервиса в prog/search_engine_crawler и prog/search_engine_ui**
-____
-:white_check_mark: Cделано
-=======
-kubectl apply -f ./log_monitor -n monitoring
+**UI, CRAWLER, DB (--namespace dev); kibama, elc, fluent (--namespace monitoring)
+ и Ingress Controller (--namespace ingress-nginx)**
 
-## 4 Защитим приложение UI с помощью TLS
+*Для удаления приложений:*
+
+bash service-install.sh delete
+
+## 2 Установка TLS для сервисов
 
 **Выполним:**
 
@@ -187,7 +81,7 @@ kubectl delete ingress ui -n dev
 
 kubectl apply -f ui-ingress.yml -n dev
 
-*найдем выделленый Ingress'ом IP для сервиса:*
+*найдем выделленый Ingress'ом IP для сервиса (у нас Внешний IP):*
 
 kubectl get service -n ingress-nginx
 
@@ -195,4 +89,5 @@ kubectl get service -n ingress-nginx
 
 **руководство по эксплуатации сервиса в prog/search_engine_crawler и prog/search_engine_ui**
 ____
+
 С Уважением!
