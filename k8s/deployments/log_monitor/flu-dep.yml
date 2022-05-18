@@ -18,7 +18,7 @@ spec:
       serviceAccountName: fluentd
       containers:
       - name: fluentd
-        image: 14kaksam88/fluentd_homework
+        image: fluent/fluentd-kubernetes-daemonset:v1.4.2-debian-elasticsearch-1.1
         env:
           - name:  FLUENT_ELASTICSEARCH_HOST
             value: "elasticsearch.default.svc.cluster.local"

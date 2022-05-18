@@ -144,6 +144,27 @@ kubectl apply -f ./CRAWLER -n dev
 
 cd ~./deployments
 
+
+**FLUENTD**
+kubectl apply -f flu-role.yml -n monitoring
+kubectl apply -f flu-rb.yml -n monitoring
+kubectl apply -f flu-dep.yml -n monitoring
+kubectl apply -f flu-sa.yml -n monitoring
+**ELASTICSEARCH**
+kubectl apply -f el-dep.yml -n monitoring
+kubectl apply -f el-srv.yml -n monitoring
+**KIBANA**
+kubectl apply -f kin-dep.yml -n monitoring
+**PROMETHEUS**
+kubectl apply -f prometheus-deployment.yml -n monitoring
+kubectl apply -f prometheus-service.yml -n monitoring
+
+*Далее вы можете начать работать с сервисом.*
+
+**руководство по эксплуатации сервиса в prog/search_engine_crawler и prog/search_engine_ui**
+____
+:white_check_mark: Cделано
+=======
 kubectl apply -f ./log_monitor -n monitoring
 
 ## 4 Защитим приложение UI с помощью TLS
@@ -175,5 +196,3 @@ kubectl get service -n ingress-nginx
 **руководство по эксплуатации сервиса в prog/search_engine_crawler и prog/search_engine_ui**
 ____
 С Уважением!
-
-

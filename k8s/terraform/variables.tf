@@ -33,9 +33,14 @@ variable region_id{
 variable iamge_name {
   default = "image name"
 }
+
+variable user_id {
+  default = "user name"
+
 variable cluster_id {
   default = "cluster_id"
 }
 variable "acc_service_id" {
   description = "acc_service_id"
+
 }

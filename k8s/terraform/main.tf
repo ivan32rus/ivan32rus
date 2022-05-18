@@ -30,6 +30,17 @@ resource "yandex_kubernetes_cluster" "k8s-test" {
     }
     public_ip = true
   }
+
+
+  #service_account_id = test
+  #node_service_account_id = test
+  service_account_id = var.user_id
+  node_service_account_id = var.user_id
+    depends_on = [
+     # yandex_resourcemanager_folder_iam_binding.editor,
+     # yandex_resourcemanager_folder_iam_binding.images-puller
+     ]
+=======
    
   # service accounts
 
@@ -40,6 +51,7 @@ resource "yandex_kubernetes_cluster" "k8s-test" {
  
   release_channel         = "RAPID"
   network_policy_provider = "CALICO"
+
 }
 
 resource "yandex_kubernetes_node_group" "node_groups" {
