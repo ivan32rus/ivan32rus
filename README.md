@@ -8,13 +8,13 @@ ____
 
 :white_check_mark: Cделано
 
-# I. Подготовка к развертыванию архитектуры: 
+# I. Подготовка к развертыванию архитектуры:
 
 ## 1. Сборка Docker (необходима, если хотите реализовать собственную сборку):
 
 **Переходим в соответствующие каталоги:**
 
-cd ~./logging 
+cd ~./logging
 cd ~./monitoring
 
 **Запускаем все контейнеры, видим stdout всех контейнеров для остановки используем Ctrl+C**
@@ -68,7 +68,7 @@ make build
 *В каталоге builder/readme.md опредставлены ключи для управления сборкой образов*
 ____
 
-:white_check_mark: Cделано 
+:white_check_mark: Cделано
 
 # II. Развертывание инфраструктуры k8s
 
@@ -112,7 +112,7 @@ https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.34.1/de
 *ingress устновлен в namespace ingress-nginx*
 ____
 
-:white_check_mark: Cделано 
+:white_check_mark: Cделано
 
 # III. Диплой приложения
 
@@ -154,12 +154,21 @@ kubectl apply -f rabbitmq-service.yml -n dev
 
 cd ~./log_monitor
 
-kubectl apply -f fluent-deployment.yml -n monitoring
-
+kubectl apply -f flu-role.yml -n monitoring
+kubectl apply -f flu-rb.yml -n monitoring
+kubectl apply -f flu-dep.yml -n monitoring
+kubectl apply -f flu-sa.yml -n monitoring
+kubectl apply -f el-dep.yml -n monitoring
+kubectl apply -f el-srv.yml -n monitoring
+kubectl apply -f kin-dep.yml -n monitoring
 kubectl apply -f prometheus-deployment.yml -n monitoring
+kubectl apply -f prometheus-service.yml -n monitoring
 
+*Далее вы можете начать работать с сервисом.*
+
+**руководство по эксплуатации сервиса в prog/search_engine_crawler и prog/search_engine_ui**
 ____
-:white_check_mark: Cделано 
+:white_check_mark: Cделано
 
 ## 4 Защитим приложение UI с помощью TLS
 
@@ -188,36 +197,6 @@ kubectl get service -n ingress-nginx
 **Далее Вы можите начать работать с сервисом.**
 
 **руководство по эксплуатации сервиса в prog/search_engine_crawler и prog/search_engine_ui**
+____
+С Уважением!
 
-
-# IV CI/CD
-
-**Установим Helm**:
-
-curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
-
-sudo apt-get install apt-transport-https --yes
-
-echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
-
-sudo apt-get update
-
-sudo apt-get install helm
-
-## 1. Установим Gitlab 
-
-:black_square_button: Тестируем...
-
-**Добавим необходимый репозиторий**
-
-helm repo add gitlab https://charts.gitlab.io
-
-**Установим Gitlab в namespace cicd**
- 
-helm install --name gitlab -f ~./gitlab-ci/values.yaml stable/gitlab-ce -n cicd
-
-*Gitlab устновлен и готов к работе*
-
-## 2. Настройка Gitlab для проекта
-
-:black_square_button: Тестируем...

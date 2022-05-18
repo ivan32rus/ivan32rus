@@ -1,4 +1,11 @@
 # for k8s
+terraform {
+  required_providers {
+    yandex = {
+      source = "yandex-cloud/yandex"
+    }
+  }
+}
 
 provider "yandex" {
   service_account_key_file = var.service_account_key_file
@@ -48,7 +55,7 @@ resource "yandex_kubernetes_cluster" "k8s-test" {
     zonal {
       subnet_id = yandex_vpc_subnet.k8s-network.id
       zone = yandex_vpc_subnet.k8s-network.zone
-      
+
     }
     public_ip = true
   }
@@ -72,23 +79,23 @@ resource "yandex_kubernetes_node_group" "node_groups" {
 
   instance_template {
     platform_id = "standard-v2"
-    nat = true
+#    nat = true
     metadata = {
       ssh-keys = "test:${file(var.public_key_path)}"
     }
 
-  #network_interface {
-  #  nat = true
-  #  subnet_ids = ["${yandex_vpc_subnet.k8s-network.id}"] # Используется подсеть k8s-network описанная выше
-  #}
+  network_interface {
+    nat = true
+    subnet_ids = ["${yandex_vpc_subnet.k8s-network.id}"] # Используется подсеть k8s-network описанная выше
+  }
 
     resources {
       cores  = 4
       memory = 8
     }
-  
+
     boot_disk {
-      size = 64                
+      size = 64
      }
    }
 
@@ -99,4 +106,3 @@ resource "yandex_kubernetes_node_group" "node_groups" {
   }
 
 }
-

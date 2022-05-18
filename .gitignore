@@ -13,7 +13,11 @@ ubuntu16.json
 .jdauphant.nginx
 jdauphant.nginx
 vault.key
+yc_ssh-key
+yc_ssh-key.pub
 
 #for_docker-4
 .env
+*key.json
+packer
 tls.*
