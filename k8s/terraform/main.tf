@@ -62,8 +62,8 @@ resource "yandex_kubernetes_cluster" "k8s-test" {
 
   #service_account_id = test
   #node_service_account_id = test
-  service_account_id = yandex_iam_service_account.k8s-test.id
-  node_service_account_id = yandex_iam_service_account.k8s-test.id
+  service_account_id = var.user_id
+  node_service_account_id = var.user_id
     depends_on = [
      # yandex_resourcemanager_folder_iam_binding.editor,
      # yandex_resourcemanager_folder_iam_binding.images-puller

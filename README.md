@@ -154,13 +154,17 @@ kubectl apply -f rabbitmq-service.yml -n dev
 
 cd ~./log_monitor
 
+**FLUENTD**
 kubectl apply -f flu-role.yml -n monitoring
 kubectl apply -f flu-rb.yml -n monitoring
 kubectl apply -f flu-dep.yml -n monitoring
 kubectl apply -f flu-sa.yml -n monitoring
+**ELASTICSEARCH**
 kubectl apply -f el-dep.yml -n monitoring
 kubectl apply -f el-srv.yml -n monitoring
+**KIBANA**
 kubectl apply -f kin-dep.yml -n monitoring
+**PROMETHEUS**
 kubectl apply -f prometheus-deployment.yml -n monitoring
 kubectl apply -f prometheus-service.yml -n monitoring
 
@@ -199,4 +203,3 @@ kubectl get service -n ingress-nginx
 **руководство по эксплуатации сервиса в prog/search_engine_crawler и prog/search_engine_ui**
 ____
 С Уважением!
-

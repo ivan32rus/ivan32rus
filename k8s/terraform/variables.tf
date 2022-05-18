@@ -32,3 +32,6 @@ variable region_id{
 variable iamge_name {
   default = "image name"
 }
+variable user_id {
+  default = "user name"
+}
