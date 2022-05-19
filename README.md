@@ -9,7 +9,7 @@ ____
 
 **Состав приложения:**
 
-![Иллюстрация к проекту](https://github.com/ivan32rus/otus-dev-01/tree/main/img/ui.JPG)
+![Приложение](https://github.com/ivan32rus/otus-dev-01/tree/main/img/ui.JPG)
 
 ____
 
@@ -83,7 +83,7 @@ bash service-install.sh delete
 
 **Далее Вы можите начать работать с сервисом.**
 
-![Иллюстрация к проекту](https://github.com/ivan32rus/otus-dev-01/blob/main/img/ui_v1.JPG)
+![Рабочий интерфейс](https://github.com/ivan32rus/otus-dev-01/blob/main/img/ui_v1.JPG)
 
 **руководство по эксплуатации сервиса в prog/search_engine_crawler и prog/search_engine_ui**
 
