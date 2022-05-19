@@ -4,19 +4,19 @@ kind: Deployment
 metadata:
   name: mongodb
   labels:
-    app: search_engine
+    app: mongo
     component: mongodb
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: search_engine
+      app: mongo
       component: mongodb
   template:
     metadata:
       name: mongodb
       labels:
-        app: search_engine
+        app: mongo
         component: mongodb
     spec:
       containers:

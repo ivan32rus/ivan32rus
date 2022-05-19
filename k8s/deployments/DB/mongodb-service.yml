@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: mongodb
   labels:
-    app: search_engine
+    app: mongo
     component: mongodb
 spec:
   ports:
@@ -12,6 +12,6 @@ spec:
     protocol: TCP
     targetPort: 27017
   selector:
-    app: search_engine
+    app: mongo
     component: mongodb
 
