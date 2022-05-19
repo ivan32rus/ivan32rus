@@ -6,15 +6,15 @@ ____
 #https://github.com/express42/search_engine_crawler
 ____
 
-:white_check_mark: Cделано
 
-*Состав приложения:*
+**Состав приложения:**
 
-![Image alt](https://github.com/ivan32rus/otus-dev-01/tree/main/img/ui.JPG)
-
-![Image alt](https://github.com/ivan32rus/otus-dev-01/raw/main/img/ui_1.JPG)
+![Иллюстрация к проекту](https://github.com/ivan32rus/otus-dev-01/tree/main/img/ui.JPG)
 
 ____
+
+
+:white_check_mark: Cделано
 
 # I. Развертывание инфраструктуры k8s
 
@@ -81,31 +81,9 @@ bash service-install.sh apply
 
 bash service-install.sh delete
 
-## 2 Установка TLS для сервисов
-
-**Выполним:**
-
-kubectl get ingress -n dev
-
-*Видим <наш IP> и выполняем*
-
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=<наш IP>"
-
-**Загрузим сертификат в Кластер:**
-
-kubectl create secret tls ui-ingress --key tls.key --cert tls.crt -n dev
-
-*Пересоздадим вручную Ingress правила:*
-
-kubectl delete ingress ui -n dev
-
-kubectl apply -f ui-ingress.yml -n dev
-
-*найдем выделленый Ingress'ом IP для сервиса (у нас Внешний IP):*
-
-kubectl get service -n ingress-nginx
-
 **Далее Вы можите начать работать с сервисом.**
+
+![Иллюстрация к проекту](https://github.com/ivan32rus/otus-dev-01/blob/main/img/ui_v1.JPG)
 
 **руководство по эксплуатации сервиса в prog/search_engine_crawler и prog/search_engine_ui**
 
