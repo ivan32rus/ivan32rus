@@ -10,9 +10,9 @@ ____
 
 *Состав приложения:*
 
-![Image alt](https://github.com/ivan32rus/otus-dev-01/raw/{main}/{img}/ui.JPG)
+![Image alt](https://github.com/ivan32rus/otus-dev-01/tree/main/img/ui.JPG)
 
-![Image alt](https://github.com/ivan32rus/otus-dev-01/raw/{main}/{img}/ui_1.JPG)
+![Image alt](https://github.com/ivan32rus/otus-dev-01/raw/main/img/ui_1.JPG)
 
 ____
 
