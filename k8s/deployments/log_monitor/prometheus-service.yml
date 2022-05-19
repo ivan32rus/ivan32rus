@@ -7,7 +7,7 @@ metadata:
     app: prometheus
     component: prometheus-prog
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   - port: 9090
     protocol: TCP

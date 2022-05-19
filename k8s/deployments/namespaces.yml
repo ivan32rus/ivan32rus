@@ -16,8 +16,3 @@ kind: Namespace
 metadata:
   name: prod
 
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: nginx-ingress

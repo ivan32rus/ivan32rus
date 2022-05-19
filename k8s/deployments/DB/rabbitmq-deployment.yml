@@ -1,22 +1,21 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: rabbitmq
   labels:
-    app: search_engine
+    app: search
     component: rabbitmq
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: search_engine
+      app: search
       component: rabbitmq
   template:
     metadata:
       name: rabbitmq
       labels:
-        app: search_engine
+        app: search
         component: rabbitmq
     spec:
       containers:
@@ -27,5 +26,3 @@ spec:
           value: crawler
         - name: RABBITMQ_PASSWORD
           value: crawler_password
-
-

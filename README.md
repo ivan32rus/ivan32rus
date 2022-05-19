@@ -8,6 +8,14 @@ ____
 
 :white_check_mark: Cделано
 
+*Состав приложения:*
+
+![Image alt](https://github.com/ivan32rus/otus-dev-01/raw/{main}/{img}/ui.JPG)
+
+![Image alt](https://github.com/ivan32rus/otus-dev-01/raw/{main}/{img}/ui_1.JPG)
+
+____
+
 # I. Развертывание инфраструктуры k8s
 
 ## Развертывание архитектуры k8s c помощью Terraform
@@ -44,6 +52,17 @@ ____
 
 # II. Диплой приложения
 
+kubctl create namespaces ingress-nginx
+
+**Установим Ingress**
+
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+
+helm repo update
+
+helm install nginx-ingress ingress-nginx/ingress-nginx --set controller.publishService.enabled=true -n ingress-nginx
+
+
 ## 1 Ставим проложения скриптом
 
 cd ~./deployments
@@ -54,8 +73,9 @@ bash service-install.sh apply
 
 **В результате будут установлены приложения:**
 
-**UI, CRAWLER, DB (--namespace dev); kibama, elc, fluent (--namespace monitoring)
- и Ingress Controller (--namespace ingress-nginx)**
+*UI, CRAWLER, DB (--namespace dev)* 
+
+*kibama, elc, fluent (--namespace monitoring)*
 
 *Для удаления приложений:*
 
@@ -88,6 +108,7 @@ kubectl get service -n ingress-nginx
 **Далее Вы можите начать работать с сервисом.**
 
 **руководство по эксплуатации сервиса в prog/search_engine_crawler и prog/search_engine_ui**
+
 ____
 
 С Уважением!

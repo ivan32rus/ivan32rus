@@ -6,8 +6,9 @@ metadata:
 spec:
   selector:
     app: kibana
-  type: NodePort
+  type: ClusterIP
   ports:
-    - port: 8080
-      targetPort: 5601
-      nodePort: 30000
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+

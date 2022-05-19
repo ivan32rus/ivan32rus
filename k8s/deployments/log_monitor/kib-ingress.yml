@@ -2,22 +2,22 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ui
+  name: kibana-monitor-service
   annotations:
     kubernetes.io/ingress.class: nginx
 
 spec:
   tls:
-  - secretName: ui-ingress
+  - secretName: kibana-ingress
   rules:
-  #- host: "<YOUR HOST_DOMAIN>"
-  - http:
+  - host: "kibana.51.250.80.71.ru"
+    http:
       paths:
       - pathType: Prefix
         path: "/"
         backend:
           service:
-            name: ui
+            name: kibana-np
             port:
-              number: 8000
+              number: 8080
 

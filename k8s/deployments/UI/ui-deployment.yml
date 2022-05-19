@@ -4,19 +4,19 @@ kind: Deployment
 metadata:
   name: ui
   labels:
-    app: search_engine
+    app: ui-service
     component: ui
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: search_engine
+      app: ui-service
       component: ui
   template:
     metadata:
       name: ui-pod
       labels:
-        app: search_engine
+        app: ui-service
         component: ui
     spec:
       containers:

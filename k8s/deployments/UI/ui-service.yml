@@ -4,14 +4,14 @@ kind: Service
 metadata:
   name: ui
   labels:
-    app: search_engine
+    app: ui-service
     component: ui
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   - port: 8000
     protocol: TCP
     targetPort: 8000
   selector:
-    app: search_engine
+    app: ui-service
     component: ui

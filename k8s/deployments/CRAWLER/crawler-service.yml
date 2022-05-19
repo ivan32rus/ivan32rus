@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: crawler
+  name: ui-crawler-service
   labels:
-    app: search_engine
-    component: crawler
+    app: crawler
+    component: ui-crawler-service
 spec:
   type: ClusterIP
   ports:
@@ -13,5 +13,5 @@ spec:
     protocol: TCP
     targetPort: 8000
   selector:
-    app: search_engine
+    app: ui-crawler-service
     component: crawler

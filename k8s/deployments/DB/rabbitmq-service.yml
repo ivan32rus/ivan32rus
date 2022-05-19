@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: rabbitmq
   labels:
-    app: search_engine
+    app: rabbit
     component: rabbitmq
 spec:
   ports:
@@ -15,7 +15,6 @@ spec:
     protocol: TCP
     port: 5672
   selector:
-    app: search_engine
+    app: rabbit
     component: rabbitmq
-
 
